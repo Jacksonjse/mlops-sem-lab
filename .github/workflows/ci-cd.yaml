@@ -1,0 +1,26 @@
+name: ci-cd yaml
+on: [push]
+
+jobs:
+    train:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Python Environment
+              uses: actions/setup-python@v4
+              with:
+                python-version: 3.11
+
+            - name: Install Dependencies
+              run: pip install --no-cache-dir -r requirements.txt
+
+            - name: Train the model
+              run: python app.py
+
+            - name: Upload as Artifact
+              uses: actions/upload-artifact@v4
+              with:
+                name: model-artifact
+                path: lr_model.pkl
